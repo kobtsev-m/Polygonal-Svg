@@ -73,10 +73,10 @@ class HomePage(TemplateView):
                 try:
                     file1_ps.generate_img('user', file1)
                     file2_ps.generate_img('user', file2)
+                    return HttpResponseRedirect(reverse_lazy('main:home'))
+
                 except (IndexError, ValueError):
                     u_form.add_error(None, 'Can\'t parse SVG image')
-
-                return HttpResponseRedirect(reverse_lazy('main:home'))
 
             return self.render_to_response({
                 'e_form': ExamplesForm,
