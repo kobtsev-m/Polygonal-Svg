@@ -3,4 +3,5 @@ psycopg2
 dj_database_url
 django-heroku
 django-crispy-forms==1.9.2
+django-inline-svg
 numpy

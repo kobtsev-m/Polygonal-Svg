@@ -6,7 +6,7 @@ import os
 
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['pure-oasis-09000.herokuapp.com']
 

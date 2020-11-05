@@ -10,8 +10,7 @@ from crispy_forms.layout import Layout, Field, ButtonHolder, Submit
 SVG_EXAMPLES_1 = list(map(
     lambda file: (file.split('.svg')[0], file.split('.svg')[0].title()),
     os.listdir(os.path.join(
-        settings.BASE_DIR,
-        'main/static/img/svg_examples/'
+        *[settings.BASE_DIR, 'main', 'static', 'svg', 'examples']
     ))
 ))
 SVG_EXAMPLES_1.insert(0, ('', 'Choose animal...'))

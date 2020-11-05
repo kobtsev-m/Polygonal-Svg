@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView
 
 
-favicon_view = RedirectView.as_view(url='/static/img/favicon.svg', permanent=True)
+favicon_view = RedirectView.as_view(url='/static/svg/favicon.svg', permanent=True)
 
 urlpatterns = [
     path('', include('main.urls')),
