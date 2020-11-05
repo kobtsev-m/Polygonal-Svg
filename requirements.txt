@@ -1,0 +1,5 @@
+Django==2.2.6
+psycopg2
+dj_database_url
+django-crispy-forms==1.9.2
+numpy
