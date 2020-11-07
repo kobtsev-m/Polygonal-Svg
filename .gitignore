@@ -1,4 +1,6 @@
 .idea
 __pycache__
+
 db.sqlite3
 polygonal_svg/settings/local.py
+polygonal_svg/main/static/svg/parsed

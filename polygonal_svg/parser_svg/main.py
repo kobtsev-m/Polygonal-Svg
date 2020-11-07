@@ -2,14 +2,16 @@ import os
 import json
 import math
 
+from cryptography.fernet import Fernet
 from .triangulation import get_triangles
 from .svg import svg_read
 
+
 class ParserSvg:
 
-    IN_FILE_PATH = None
-    OUT_FILE_SVG_PATH = None
-    OUT_FILE_JSON_PATH = None
+    IN_FILE = None
+    OUT_FILE_SVG = None
+    OUT_FILE_JSON = None
 
     SHOW_CIRCUIT = False
 
@@ -62,14 +64,22 @@ class ParserSvg:
     def generate_points_string(points):
         return ' '.join(map(lambda point: ' '.join(map(str, point)), points))
 
-    def generate_img(self, tab, in_file=None):
+    def decrypt(self):
+        f = Fernet(os.environ.get('CRYPTO_KEY'))
 
-        # Чтение файла
-        if not in_file:
-            in_file = open(self.IN_FILE_PATH).read()
+        with open(self.IN_FILE, 'rb') as file:
+            encrypted_data = file.read()
+
+        return f.decrypt(encrypted_data).decode('utf-8')
+
+    def generate_img(self, tab, decrypt=None):
+
+        # Расшифорвка файла
+        if decrypt:
+            self.IN_FILE = self.decrypt()
 
         # Чтение координат точек из SVG файла и разделение на многоугольники
-        view_box, circuit, polygons = svg_read(in_file)
+        view_box, circuit, polygons = svg_read(self.IN_FILE)
 
         # Объединение соседних точек в многоугольниках
         if self.POINTS_APPROXIMATION:
@@ -148,8 +158,11 @@ class ParserSvg:
                 'points': points
             })
 
-        if self.OUT_FILE_SVG_PATH:
-            with open(self.OUT_FILE_SVG_PATH, 'w') as f:
+        if self.OUT_FILE_SVG:
+            if not os.path.exists(os.path.dirname(self.OUT_FILE_SVG)):
+                os.makedirs(os.path.dirname(self.OUT_FILE_SVG))
+
+            with open(self.OUT_FILE_SVG, 'w') as f:
                 f.write(svg_basis.format(
                     svg_id='{}Svg'.format(tab),
                     x1=view_box[0] * 2,
@@ -159,7 +172,9 @@ class ParserSvg:
                     content=content
                 ))
 
-        if self.OUT_FILE_JSON_PATH:
-            with open(self.OUT_FILE_JSON_PATH, 'w') as f:
-                json.dump(data, f, indent=2)
+        if self.OUT_FILE_JSON:
+            if not os.path.exists(os.path.dirname(self.OUT_FILE_JSON)):
+                os.makedirs(os.path.dirname(self.OUT_FILE_JSON))
 
+            with open(self.OUT_FILE_JSON, 'w') as f:
+                json.dump(data, f, indent=2)

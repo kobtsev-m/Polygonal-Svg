@@ -37,7 +37,7 @@
         <div class="tab-pane fade py-4" id="examples">
             {% crispy e_form %}
             <div class="row mt-5 mx-1">
-                {% svg 'rendered/parsed_examples' %}
+                {% svg 'parsed/examples' %}
             </div>
         </div>
 
@@ -47,7 +47,7 @@
             </h4>
             {% crispy u_form %}
             <div class="row mt-5 mx-1">
-                {% svg 'rendered/parsed_user' %}
+                {% svg 'parsed/user' %}
             </div>
         </div>
     </div>
@@ -61,14 +61,14 @@
     <script>
         async function getExampleSvgData() {
             let response = await fetch(
-                "{% static 'svg/data/parsed_examples.json' %}",
+                "{% static 'svg/parsed/examples.json' %}",
                 {cache: 'reload'}
             )
             return await response.json();
         }
         async function getUserSvgData() {
             let response = await fetch(
-                "{% static 'svg/data/parsed_user.json' %}",
+                "{% static 'svg/parsed/user.json' %}",
                 {cache: 'reload'}
             )
             return await response.json();

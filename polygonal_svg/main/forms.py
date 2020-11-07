@@ -1,17 +1,21 @@
-from django.conf import settings
 from django.urls import reverse
 from django import forms
+
+from django.contrib.staticfiles.finders import find
 import os
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, ButtonHolder, Submit
 
 
+EXAMPLES_DIR = find('svg/examples')
+
 SVG_EXAMPLES_1 = list(map(
     lambda file: (file.split('.svg')[0], file.split('.svg')[0].title()),
-    os.listdir(os.path.join(
-        *[settings.BASE_DIR, 'main', 'static', 'svg', 'examples']
-    ))
+    [
+        file for file in os.listdir(EXAMPLES_DIR)
+        if os.path.isfile(os.path.join(EXAMPLES_DIR, file))
+    ]
 ))
 SVG_EXAMPLES_1.insert(0, ('', 'Choose animal...'))
 SVG_EXAMPLES_2 = SVG_EXAMPLES_1.copy()

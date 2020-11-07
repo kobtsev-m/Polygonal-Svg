@@ -1,5 +1,3 @@
-import re
-
 def get_current_point(coords_string, prev_point=None):
 
     if ',' in coords_string:
