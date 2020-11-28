@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 
 from django.contrib.staticfiles.finders import find
+from django.conf import settings
 import os
 
 from parser_svg.main import ParserSvg
@@ -12,7 +13,9 @@ from main.forms import ExamplesForm, UserForm
 class HomePage(TemplateView):
 
     template_name = 'index.html'
-    svg_dir = find('svg')
+    
+    svg_main = find('svg')
+    svg_root = os.path.join(settings.STATIC_ROOT, 'svg')
 
     def get(self, request, *args, **kwargs):
 
@@ -82,10 +85,11 @@ class HomePage(TemplateView):
             ps2.IN_FILE = file2
 
         ps1.OUT_FILE_SVG = os.path.join(
-            self.svg_dir, 'parsed/{}.svg'.format(tab)
+            self.svg_main, 'parsed/{}.svg'.format(tab)
         )
         ps2.OUT_FILE_JSON = os.path.join(
-            self.svg_dir, 'parsed/{}.json'.format(tab)
+            self.svg_main if settings.DEBUG else self.svg_root,
+            'parsed/{}.json'.format(tab)
         )
 
         ps1.generate_img(tab, find_files)
